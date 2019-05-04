@@ -1,30 +1,29 @@
 package com.kodilla.ecommercee.domain;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Order {
     private Long id;
-    private LocalDate dateCreated;
+    private Date dateCreated;
     private String status;
     private List<Product> orderProducts = new ArrayList<>();
 
     public Order() {
     }
 
-    public Order(Long id, LocalDate dateCreated, String status, List<Product> orderProducts) {
+    public Order(Long id, String status) {
         this.id = id;
-        this.dateCreated = dateCreated;
+        dateCreated = new Date();
         this.status = status;
-        this.orderProducts = orderProducts;
     }
 
     public Long getId() {
         return id;
     }
 
-    public LocalDate getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
