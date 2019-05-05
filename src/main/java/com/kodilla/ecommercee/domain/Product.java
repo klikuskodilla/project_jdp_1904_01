@@ -9,6 +9,7 @@ public class Product {
     private Long id;
     private String name;
     private double prize;
+    private Order order;
 
     public Product() {
     }
@@ -38,6 +39,12 @@ public class Product {
         return prize;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "Order_Id")
+    public Order getOrder() {
+        return order;
+    }
+
     private void setId(Long id) {
         this.id = id;
     }
@@ -48,5 +55,9 @@ public class Product {
 
     private void setPrize(double prize) {
         this.prize = prize;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }
