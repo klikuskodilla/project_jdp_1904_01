@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 @NoArgsConstructor
 @Getter
@@ -33,11 +35,11 @@ public class User {
 
     public int keyGenerator(){
         int keyValue = 0;
-        Random generator = new Random();
-        int[] keyNumbers = new int[5];
-        for (int i = 0 ; i < 5 ; i++ ){
-            keyNumbers[i] = generator.nextInt(10);
-        }
+        int[] keyNumbers = IntStream.range(0,5).toArray();
+        keyNumbers = Arrays.stream(keyNumbers)
+                .map(e -> new Random().nextInt(10))
+                .toArray();
+
         for (int i = 0 ; i < keyNumbers.length ; i++) {
             if (keyNumbers[4] == 0){
                 keyNumbers[4] = 1;
