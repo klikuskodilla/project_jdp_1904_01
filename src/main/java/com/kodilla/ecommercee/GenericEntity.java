@@ -6,6 +6,9 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "Generic_Entity")
 public class GenericEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String value;
 
