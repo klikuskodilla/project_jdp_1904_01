@@ -2,9 +2,7 @@ package com.kodilla.ecommercee.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "Orders")
@@ -12,7 +10,6 @@ public class Order {
     private Long id;
     private Date dateCreated;
     private String status;
-    private List<Product> orderProducts = new ArrayList<>();
 
     public Order() {
     }
@@ -43,16 +40,6 @@ public class Order {
         return status;
     }
 
-    @OneToMany(
-            targetEntity = Product.class,
-            mappedBy = "order",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
-    )
-    public List<Product> getOrderProducts() {
-        return orderProducts;
-    }
-
     private void setId(Long id) {
         this.id = id;
     }
@@ -63,9 +50,5 @@ public class Order {
 
     private void setStatus(String status) {
         this.status = status;
-    }
-
-    private void setOrderProducts(List<Product> orderProducts) {
-        this.orderProducts = orderProducts;
     }
 }
