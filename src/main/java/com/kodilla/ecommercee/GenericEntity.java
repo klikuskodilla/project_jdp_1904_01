@@ -15,17 +15,15 @@ public class GenericEntity {
     public GenericEntity() {
     }
 
+    public GenericEntity(String value) {
+        this.value = value;
+    }
+
     public String getValue() {
         return value;
     }
 
     public Long getId() {
-
         return id;
-    }
-
-    public GenericEntity(String value) {
-
-        this.value = value;
     }
 }
