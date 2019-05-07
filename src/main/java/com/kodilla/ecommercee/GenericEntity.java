@@ -1,16 +1,17 @@
 package com.kodilla.ecommercee;
 
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@NoArgsConstructor
 @Table(name = "Generic_Entity")
 public class GenericEntity {
     private Long id;
     private String value;
+
+    public GenericEntity() {
+
+    }
 
     public GenericEntity(String value) {
         this.value = value;
