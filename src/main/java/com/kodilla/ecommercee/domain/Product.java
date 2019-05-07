@@ -1,17 +1,18 @@
 package com.kodilla.ecommercee.domain;
 
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@NoArgsConstructor
 @Table(name = "Products")
+
 public class Product {
     private Long id;
     private String name;
     private double prize;
-
-    public Product() {
-    }
 
     public Product(String name, double prize) {
         this.name = name;
@@ -19,22 +20,22 @@ public class Product {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id", unique = true)
     public Long getId() {
         return id;
     }
 
-    @Column(name = "Name")
     @NotNull
+    @Column(name = "Name")
     public String getName() {
         return name;
     }
 
-    @Column(name = "Prize")
     @NotNull
-    public double getPrize() {
+    @Column(name = "Prize")
+    private double getPrize() {
         return prize;
     }
 
