@@ -17,12 +17,12 @@ public class GenericEntity {
         this.value = value;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public String getValue() {
         return value;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     private void setId(Long id) {
