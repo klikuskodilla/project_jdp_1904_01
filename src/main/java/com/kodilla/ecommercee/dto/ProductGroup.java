@@ -23,12 +23,12 @@ public class ProductGroup {
     @Column(name = "DESCRIPTION")
     private String description;
 
+
 //    @OneToMany(targetEntity =  Product.class,
 //            mappedBy = "product",
 //            cascade = CascadeType.ALL,
 //            fetch = FetchType.LAZY)
 //    List<Product> products = new ArrayList<>();
-
 }
 
 
