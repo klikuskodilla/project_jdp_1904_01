@@ -1,11 +1,11 @@
 package com.kodilla.ecommercee;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "Generic_Entity")
 public class GenericEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String value;
 
@@ -17,15 +17,10 @@ public class GenericEntity {
         this.value = value;
     }
 
-    @Id
-    @NotNull
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id" ,unique = true)
     public Long getId() {
         return id;
     }
 
-    @Column(name = "Value")
     public String getValue() {
         return value;
     }
