@@ -1,4 +1,4 @@
-package com.kodilla.ecommercee.domain.cart;
+package com.kodilla.ecommercee.domain;
 
 import lombok.Getter;
 import lombok.Setter;
