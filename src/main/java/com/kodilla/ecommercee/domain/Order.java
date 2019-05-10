@@ -7,7 +7,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,19 +31,19 @@ public class Order {
     @Column(name = "Status")
     private String status;
 
-//    @OneToMany(targetEntity = Product.class,
-//            mappedBy = order,
-//            cascade = CascadeType.ALL,
-//            fetch = FetchType.LAZY)
-//    private List<Product> orderedProducts = new ArrayList<>();
+    @OneToMany(targetEntity = Product.class,
+            mappedBy = "order",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private List<Product> orderedProducts = new ArrayList<>();
 
-//    @ManyToOne
-//    @JoinColumn(name = "User_ID")
-//    private User user;
+    @ManyToOne
+    @JoinColumn(name = "User_ID")
+    private User user;
 
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "Cart_ID")
-//    private Cart cart;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "Cart_ID")
+    private Cart cart;
 
     public Order(String status) {
         this.id = id;

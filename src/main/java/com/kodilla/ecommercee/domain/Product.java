@@ -36,9 +36,9 @@ public class Product {
     @JoinColumn(name = "ProductGroup_ID")
     private ProductGroup product;
 
-//    @ManyToOne
-//    @JoinColumn(name = "Order_ID")
-//    private Order order;
+    @ManyToOne
+    @JoinColumn(name = "Order_ID")
+    private Order order;
 
     public Product(String name, double prize) {
         this.name = name;

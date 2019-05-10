@@ -14,15 +14,15 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-//    @OneToMany(
-//            targetEntity = Product.class,
-//            mappedBy = "cart",
-//            cascade = CascadeType.ALL,
-//            fetch = FetchType.LAZY
-//    )
-//    private List<Product> productList = new ArrayList<>();
-//
-//    @ManyToOne
-//    @JoinColumn(name = "USER_ID")
-//    private User user;
+    @OneToMany(
+            targetEntity = Product.class,
+            mappedBy = "cart",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private List<Product> productList = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
 }
