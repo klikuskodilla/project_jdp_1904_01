@@ -1,22 +1,20 @@
 package com.kodilla.ecommercee.domain;
 
-import com.kodilla.ecommercee.domain.Cart;
-import lombok.Data;
-
-import javax.persistence.*;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
-import java.util.*;
-import java.util.stream.IntStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
 public class User {
+
     @Id
     @Column(name = "ID", unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,21 +35,22 @@ public class User {
     @Column(name = "PASSWORD")
     private String password;
 
-//    @OneToMany(
-//            targetEntity = Cart.class,
-//            mappedBy = "user",
-//            cascade = CascadeType.ALL,
-//            fetch = FetchType.LAZY
-//    )
-//    private List<Cart> cartList = new ArrayList<>();
+    @OneToMany(
+            targetEntity = Cart.class,
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private List<Cart> cartList = new ArrayList<>();
 
-//    @OneToMany(
-//            targetEntity = Order.class,
-//            mappedBy = "user",
-//            cascade = CascadeType.ALL,
-//            fetch = FetchType.LAZY
-//    )
-//    private Order order;
+    @OneToMany(
+            targetEntity = Order.class,
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+
+    private List<Order> orderList = new ArrayList<>();
 
     public User(String userName, String password){
         this.userName = userName;
