@@ -19,7 +19,7 @@ public interface UserDao extends CrudRepository<User, Long> {
     Optional<User> findById(Long Id);
 
     @Override
-    Product save (User user);
+    User save (User user);
 
     @Override
     void deleteById(Long Id);
