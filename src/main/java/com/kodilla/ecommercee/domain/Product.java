@@ -10,12 +10,13 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "Product_T")
+@Table(name = "Product")
+
 public class Product {
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", unique = true)
+    @Column(name = "Id", unique = true)
     private Long id;
 
     @NotNull
@@ -35,7 +36,7 @@ public class Product {
     private ProductGroup productGroup;
 
     @ManyToOne
-    @JoinColumn(name = "UserOrder_ID")
+    @JoinColumn(name = "Order_ID")
     private Order order;
 
     public Product(String name, double prize) {
