@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @Table(name = "Product_T")
-
 public class Product {
     @Id
     @NotNull
@@ -36,7 +35,7 @@ public class Product {
     private ProductGroup productGroup;
 
     @ManyToOne
-    @JoinColumn(name = "Order_ID")
+    @JoinColumn(name = "UserOrder_ID")
     private Order order;
 
     public Product(String name, double prize) {
