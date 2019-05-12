@@ -13,12 +13,13 @@ import java.util.Random;
 @Getter
 @Setter
 @Entity
+@Table(name = "User_T")
 public class User {
 
     @Id
     @Column(name = "ID", unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "USERNAME")
     private String userName;

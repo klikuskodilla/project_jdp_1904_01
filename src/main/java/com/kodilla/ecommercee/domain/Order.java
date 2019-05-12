@@ -14,12 +14,12 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "Order")
+@Table(name = "Order_T")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
-    @Column(name = "Id", unique = true)
+    @Column(name = "ID", unique = true)
     private Long id;
 
     @NotNull
