@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -23,11 +25,12 @@ public class ProductGroup {
     @Column(name = "DESCRIPTION")
     private String description;
 
-//    @OneToMany(targetEntity =  Product.class,
-//            mappedBy = "product",
-//            cascade = CascadeType.ALL,
-//            fetch = FetchType.LAZY)
-//    List<Product> products = new ArrayList<>();
+    @OneToMany(targetEntity =  Product.class,
+            mappedBy = "productGroup",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    List<Product> products = new ArrayList<>();
+
 }
 
 
