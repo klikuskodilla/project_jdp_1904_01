@@ -18,7 +18,6 @@ import java.util.List;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(name = "ID", unique = true)
     private Long id;
 
@@ -26,7 +25,7 @@ public class Order {
     @Column(name = "Date_Created")
     private Date dateCreated;
 
-    @NotNull
+    //@NotNull
     @Column(name = "Status")
     private String status;
 
@@ -40,9 +39,9 @@ public class Order {
     @JoinColumn(name = "User_ID")
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "Cart_ID")
-    private Cart cart;
+//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "Cart_ID")
+//    private Cart cart;
 
     public Order(String status) {
         dateCreated = new Date();

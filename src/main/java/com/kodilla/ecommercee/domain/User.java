@@ -40,7 +40,7 @@ public class User {
             targetEntity = Cart.class,
             mappedBy = "user",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     private List<Cart> cartList = new ArrayList<>();
 
@@ -50,7 +50,6 @@ public class User {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
-
     private List<Order> orderList = new ArrayList<>();
 
     public User(String userName, String password){
