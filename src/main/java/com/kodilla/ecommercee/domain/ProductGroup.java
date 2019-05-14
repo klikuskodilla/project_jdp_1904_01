@@ -14,11 +14,10 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Product_Group_T")
+@Table(name = "PRODUCT_GROUP_T")
 public class ProductGroup {
 
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID",unique = true)
     private Long id;
@@ -33,5 +32,3 @@ public class ProductGroup {
     List<Product> products = new ArrayList<>();
 
 }
-
-

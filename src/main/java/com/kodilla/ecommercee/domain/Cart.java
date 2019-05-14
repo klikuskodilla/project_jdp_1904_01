@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "Cart_T")
+@Table(name = "CART_T")
 public class Cart {
 
     @Id
@@ -19,7 +19,7 @@ public class Cart {
             targetEntity = Product.class,
             mappedBy = "cart",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     private List<Product> productList = new ArrayList<>();
 

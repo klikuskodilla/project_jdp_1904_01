@@ -13,7 +13,7 @@ import java.util.Random;
 @Getter
 @Setter
 @Entity
-@Table(name = "User_T")
+@Table(name = "USER_T")
 public class User {
 
     @Id
@@ -40,7 +40,7 @@ public class User {
             targetEntity = Cart.class,
             mappedBy = "user",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     private List<Cart> cartList = new ArrayList<>();
 
@@ -48,7 +48,7 @@ public class User {
             targetEntity = Order.class,
             mappedBy = "user",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
 
     private List<Order> orderList = new ArrayList<>();
