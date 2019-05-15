@@ -46,11 +46,9 @@ public class UserTestSuite {
 
         order.setCart(cart);
 
-        // ----Update---------
         cartDao.save(cart);
         userDao.save(user);
         orderDao.save(order);
-        //--------------------
 
         Long userId = user.getId();
         int userKey = user.getUserKey();
