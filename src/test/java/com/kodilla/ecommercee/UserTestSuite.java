@@ -54,7 +54,7 @@ public class UserTestSuite {
         System.out.println(userTest.getTimeGenerateKey());
         System.out.println(userTest.getUserKey());
         System.out.println(userTest.getCartList().get(0).getId());
-        //System.out.println(userTest.getOrderList().size());
+        System.out.println(userTest.getOrderList().size());
         System.out.println(orderDao.findById(1L).get().getStatus());
 
 //        Long userId = user.getId();

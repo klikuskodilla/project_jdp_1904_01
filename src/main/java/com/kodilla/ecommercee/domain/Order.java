@@ -32,7 +32,7 @@ public class Order {
     @OneToMany(targetEntity = Product.class,
             mappedBy = "order",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+            fetch = FetchType.EAGER)
     private List<Product> orderedProducts = new ArrayList<>();
 
     @ManyToOne
