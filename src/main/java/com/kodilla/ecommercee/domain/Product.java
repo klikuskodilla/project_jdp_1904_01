@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "Product_T")
+@Table(name = "PRODUCT_T")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,23 +18,23 @@ public class Product {
     private Long id;
 
     @NotNull
-    @Column(name = "Name")
+    @Column(name = "NAME")
     private String name;
 
     @NotNull
-    @Column(name = "Prize")
+    @Column(name = "PRIZE")
     private double prize;
 
     @ManyToOne
-    @JoinColumn(name = "Cart_ID")
+    @JoinColumn(name = "CART_ID")
     private Cart cart;
 
     @ManyToOne
-    @JoinColumn(name = "ProductGroup_ID")
+    @JoinColumn(name = "PRODUCTGROUP_ID")
     private ProductGroup productGroup;
 
     @ManyToOne
-    @JoinColumn(name = "UserOrder_ID")
+    @JoinColumn(name = "USERORDER_ID")
     private Order order;
 
     public Product(String name, double prize) {

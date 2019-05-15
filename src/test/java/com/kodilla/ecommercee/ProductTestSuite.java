@@ -22,10 +22,11 @@ public class ProductTestSuite {
         //When
         productDao.save(product);
         Long id = product.getId();
+        Product productTest = productDao.findById(id).get();
 
         //Then
-        assertEquals( "product", productDao.findById(id).get().getName());
-        assertEquals( 12.5, productDao.findById(id).get().getPrize(),0.001);
+        assertEquals( "product", productTest.getName());
+        assertEquals( 12.5, productTest.getPrize(),0.001);
 
         //Clean Up
         productDao.deleteById(id);
@@ -42,10 +43,11 @@ public class ProductTestSuite {
         productDao.save(product);
         productDao.save(product2);
         productDao.save(product3);
+        Product productTest = productDao.findById(product2.getId()).get();
 
         //Then
-        assertEquals("product2", productDao.findById(product2.getId()).get().getName());
-        assertEquals(12.5, productDao.findById(product2.getId()).get().getPrize(),0.01);
+        assertEquals("product2", productTest.getName());
+        assertEquals(12.5, productTest.getPrize(),0.01);
 
         //Clean Up
         productDao.deleteById(product3.getId());
