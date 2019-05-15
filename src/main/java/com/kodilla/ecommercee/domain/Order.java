@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "Order_T")
+@Table(name = "ORDER_T")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,25 +23,25 @@ public class Order {
     private Long id;
 
     @NotNull
-    @Column(name = "Date_Created")
+    @Column(name = "DATE_CREATED")
     private Date dateCreated;
 
     @NotNull
-    @Column(name = "Status")
+    @Column(name = "STATUS")
     private String status;
 
     @OneToMany(targetEntity = Product.class,
             mappedBy = "order",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+            fetch = FetchType.EAGER)
     private List<Product> orderedProducts = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "User_ID")
+    @JoinColumn(name = "USER_ID")
     private User user;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "Cart_ID")
+    @JoinColumn(name = "CART_ID")
     private Cart cart;
 
     public Order(String status) {
