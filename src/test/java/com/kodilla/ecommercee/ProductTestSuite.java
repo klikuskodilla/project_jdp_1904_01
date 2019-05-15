@@ -16,7 +16,7 @@ public class ProductTestSuite {
     private ProductDao productDao;
 
     @Test
-    public void saveTest(){
+    public void saveAndFindByIdTest(){
         //Given
         Product product = new Product("product", 12.5);
         //When
@@ -30,28 +30,5 @@ public class ProductTestSuite {
 
         //Clean Up
         productDao.deleteById(id);
-    }
-
-    @Test
-    public void findById(){
-        //Given
-        Product product = new Product("product", 11.5);
-        Product product2 = new Product("product2", 12.5);
-        Product product3 = new Product("product3", 13.5);
-
-        //When
-        productDao.save(product);
-        productDao.save(product2);
-        productDao.save(product3);
-        Product productTest = productDao.findById(product2.getId()).get();
-
-        //Then
-        assertEquals("product2", productTest.getName());
-        assertEquals(12.5, productTest.getPrize(),0.01);
-
-        //Clean Up
-        productDao.deleteById(product3.getId());
-        productDao.deleteById(product2.getId());
-        productDao.deleteById(product.getId());
     }
 }
