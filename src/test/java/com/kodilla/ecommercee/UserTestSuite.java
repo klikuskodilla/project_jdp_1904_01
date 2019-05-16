@@ -70,17 +70,6 @@ public class UserTestSuite {
         assertEquals(orderSize, userTest.getOrderList().size());
         assertEquals(orderStatus, userTest.getOrderList().get(0).getStatus());
 
-        System.out.println();
-        System.out.println("user name: " + userTest.getUserName());
-        System.out.println("password: " + userTest.getPassword());
-        System.out.println("key: " + userTest.getUserKey());
-        System.out.println("key time genrate: " + userTest.getTimeGenerateKey());
-        System.out.println("user status: " + userTest.isStatus());
-        System.out.println("size cart list : " + userTest.getCartList().size());
-        System.out.println("size order list: " + userTest.getOrderList().size());
-        System.out.println("order status: " + userTest.getOrderList().get(0).getStatus());
-        System.out.println();
-
         //Clean Up
         orderDao.deleteById(order.getId());
         cartDao.deleteById(cart.getId());
