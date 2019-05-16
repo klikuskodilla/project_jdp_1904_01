@@ -18,7 +18,6 @@ import java.util.List;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(name = "ID", unique = true)
     private Long id;
 
@@ -33,7 +32,7 @@ public class Order {
     @OneToMany(targetEntity = Product.class,
             mappedBy = "order",
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER)
+            fetch = FetchType.LAZY)
     private List<Product> orderedProducts = new ArrayList<>();
 
     @ManyToOne
