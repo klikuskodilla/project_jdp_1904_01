@@ -19,7 +19,7 @@ public class Cart {
             targetEntity = Product.class,
             mappedBy = "cart",
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
     private List<Product> productList = new ArrayList<>();
 
