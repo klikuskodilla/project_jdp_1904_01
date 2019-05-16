@@ -48,4 +48,10 @@ public class Order {
         dateCreated = new Date();
         this.status = status;
     }
+
+    public Order(Long id, Date date, String status) {
+        this.id = id;
+        this.dateCreated = date;
+        this.status = status;
+    }
 }

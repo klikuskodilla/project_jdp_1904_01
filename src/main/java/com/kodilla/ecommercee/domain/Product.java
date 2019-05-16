@@ -42,4 +42,10 @@ public class Product {
         this.name = name;
         this.prize = prize;
     }
+
+    public Product(Long id, String name, double prize) {
+        this.id = id;
+        this.name = name;
+        this.prize = prize;
+    }
 }

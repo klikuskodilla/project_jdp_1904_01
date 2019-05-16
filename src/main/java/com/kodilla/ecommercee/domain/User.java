@@ -50,7 +50,6 @@ public class User {
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER
     )
-
     private List<Order> orderList = new ArrayList<>();
 
     public User(String userName, String password){
@@ -64,5 +63,12 @@ public class User {
     public int keyGenerator(){
         Random random = new Random();
         return random.nextInt(89999)+10001;
+    }
+
+    public User(Long id, String userName, boolean status, int userKey ) {
+        this.id = id;
+        this.userName = userName;
+        this.status = status;
+        this.userKey = userKey;
     }
 }

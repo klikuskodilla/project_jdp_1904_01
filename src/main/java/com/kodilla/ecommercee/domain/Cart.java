@@ -26,4 +26,8 @@ public class Cart {
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
+
+    public Cart(Long id) {
+        this.id = id;
+    }
 }
