@@ -40,7 +40,7 @@ public class User {
             targetEntity = Cart.class,
             mappedBy = "user",
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
     private List<Cart> cartList = new ArrayList<>();
 
@@ -48,7 +48,7 @@ public class User {
             targetEntity = Order.class,
             mappedBy = "user",
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
 
     private List<Order> orderList = new ArrayList<>();
