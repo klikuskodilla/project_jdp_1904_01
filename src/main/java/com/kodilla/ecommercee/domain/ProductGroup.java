@@ -32,8 +32,7 @@ public class ProductGroup {
             fetch = FetchType.LAZY)
     List<Product> products = new ArrayList<>();
 
-    public ProductGroup(Long id, String description) {
-        this.id = id;
+    public ProductGroup(String description) {
         this.description = description;
     }
 }

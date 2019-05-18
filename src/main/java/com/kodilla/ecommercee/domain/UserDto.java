@@ -14,4 +14,5 @@ public class UserDto {
     private String userName;
     private boolean status;
     private int userKey;
+    private String password;
 }

@@ -64,11 +64,4 @@ public class User {
         Random random = new Random();
         return random.nextInt(89999)+10001;
     }
-
-    public User(Long id, String userName, boolean status, int userKey ) {
-        this.id = id;
-        this.userName = userName;
-        this.status = status;
-        this.userKey = userKey;
-    }
 }
