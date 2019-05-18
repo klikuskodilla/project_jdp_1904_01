@@ -10,8 +10,6 @@ import java.util.stream.Collectors;
 public class OrderMapper {
     public Order mapToOrder(OrderDto orderDto) {
         return new Order(
-                orderDto.getId(),
-                orderDto.getDateCreated(),
                 orderDto.getStatus()
         );
     }
