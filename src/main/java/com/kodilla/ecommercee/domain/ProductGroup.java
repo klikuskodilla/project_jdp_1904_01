@@ -18,7 +18,6 @@ import java.util.List;
 public class ProductGroup {
 
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID",unique = true)
     private Long id;
@@ -33,5 +32,3 @@ public class ProductGroup {
     List<Product> products = new ArrayList<>();
 
 }
-
-
