@@ -54,11 +54,14 @@ public class OrderDaoTestSuite {
         Long cartId = cart.getId();
 
         Optional<Order> testOrder = orderDao.findById(orderId);
+        String status = testOrder.get().getStatus();
+        String username = testOrder.get().getUser().getUserName();
+        String userCart = testOrder.get().getCart().getUser().getUserName();
 
         //Then
-        assertEquals("open", testOrder.get().getStatus());
-        assertEquals("Anna", testOrder.get().getUser().getUserName());
-        assertEquals("Anna",testOrder.get().getCart().getUser().getUserName());
+        assertEquals("open", status);
+        assertEquals("Anna", username);
+        assertEquals("Anna",userCart);
 
         //CleanUp
         orderDao.deleteById(orderId);
@@ -102,12 +105,15 @@ public class OrderDaoTestSuite {
         //When
         Optional<Order> testOrder = orderDao.findById(orderId);
         Optional<Order> testOrder2 = orderDao.findById(order2Id);
+        String status = testOrder.get().getStatus();
+        String status2 = testOrder2.get().getStatus();
+        String username2 = testOrder2.get().getUser().getUserName();
 
         //Then
         assertEquals(true, testOrder.isPresent());
-        assertEquals("open", testOrder.get().getStatus());
-        assertEquals("closed", testOrder2.get().getStatus());
-        assertEquals("Mark", testOrder2.get().getUser().getUserName());
+        assertEquals("open", status);
+        assertEquals("closed", status2);
+        assertEquals("Mark", username2);
 
         //CleanUp
         orderDao.deleteById(orderId);
@@ -186,13 +192,18 @@ public class OrderDaoTestSuite {
         productDao.save(product);
 
         Order testOrder = orderDao.findById(order.getId()).get();
+        String status = testOrder.getStatus();
+        String username = testOrder.getUser().getUserName();
+        String password = testOrder.getUser().getPassword();
+        String productName = testOrder.getOrderedProducts().get(0).getName();
+        Double productPrice = testOrder.getOrderedProducts().get(0).getPrize();
 
         //Then
-        assertEquals("open", testOrder.getStatus());
-        assertEquals("Anna", testOrder.getUser().getUserName());
-        assertEquals("password", testOrder.getUser().getPassword());
-        assertEquals("product", testOrder.getOrderedProducts().get(0).getName());
-        assertEquals(10.0, testOrder.getOrderedProducts().get(0).getPrize(), 0.01);
+        assertEquals("open", status);
+        assertEquals("Anna", username);
+        assertEquals("password", password);
+        assertEquals("product", productName);
+        assertEquals(10.0, productPrice, 0.01);
 
         //Clean Up
         productDao.deleteById(product.getId());
