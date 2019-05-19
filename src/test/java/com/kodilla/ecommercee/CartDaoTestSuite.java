@@ -167,6 +167,5 @@ public class CartDaoTestSuite {
 
         //Then
         assertEquals(0,carts.size());
-
     }
 }
