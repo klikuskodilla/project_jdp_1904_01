@@ -57,12 +57,16 @@ public class CartDaoTestSuite {
 
         //When
         Optional<Cart> cartTest = cartDao.findById(cartId);
+        String username = cartTest.get().getUser().getUserName();
+        String password = cartTest.get().getUser().getPassword();
+        double productPrice = cartTest.get().getProductList().get(0).getPrize();
+        String productName = cartTest.get().getProductList().get(0).getName();
 
         //Then
-        assertEquals("password",cartTest.get().getUser().getPassword());
-        assertEquals("Anna",cartTest.get().getUser().getUserName());
-        assertEquals(100,cartTest.get().getProductList().get(0).getPrize(),001);
-        assertEquals("product",cartTest.get().getProductList().get(0).getName());
+        assertEquals("password",password);
+        assertEquals("Anna",username);
+        assertEquals(100,productPrice,001);
+        assertEquals("product",productName);
 
         //CleanUp
         cartDao.deleteById(cartId);
@@ -97,11 +101,13 @@ public class CartDaoTestSuite {
 
         //When
         Optional<Cart> cartTest = cartDao.findById(cartId);
+        String username = cartTest.get().getUser().getUserName();
+        double productListSize = cartTest.get().getProductList().size();
 
         //Then
         assertEquals(true,cartTest.isPresent());
-        assertEquals("Anna",cartTest.get().getUser().getUserName());
-        assertEquals(1,cartTest.get().getProductList().size());
+        assertEquals("Anna",username);
+        assertEquals(1,productListSize,001);
 
         //CleanUp
          cartDao.deleteById(cartId);
