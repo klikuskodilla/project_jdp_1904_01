@@ -32,5 +32,3 @@ public class ProductGroup {
     List<Product> products = new ArrayList<>();
 
 }
-
-
