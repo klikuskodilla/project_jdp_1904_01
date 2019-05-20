@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Optional;
@@ -65,7 +66,6 @@ public class OrderDaoTestSuite {
 
         //CleanUp
         orderDao.deleteById(orderId);
-        cartDao.deleteById(cartId);
         userDao.deleteById(userId);
     }
 
@@ -118,8 +118,6 @@ public class OrderDaoTestSuite {
         //CleanUp
         orderDao.deleteById(orderId);
         orderDao.deleteById(order2Id);
-        cartDao.deleteById(cart2Id);
-        cartDao.deleteById(cartId);
         userDao.deleteById(userId);
         userDao.deleteById(user2Id);
     }
@@ -138,9 +136,9 @@ public class OrderDaoTestSuite {
         User user2 = new User("Mark", "password_Mark");
 
         order.setUser(user);
-        order.setUser(user2);
         order.setCart(cart);
-        order.setCart(cart2);
+        order2.setUser(user2);
+        order2.setCart(cart2);
 
         userDao.save(user);
         Long userId = user.getId();
@@ -149,8 +147,9 @@ public class OrderDaoTestSuite {
         orderDao.save(order);
         Long orderId = order.getId();
         orderDao.save(order2);
-        Long order2Id = order.getId();
+        Long order2Id = order2.getId();
         cartDao.save(cart);
+        cartDao.save(cart2);
 
         //When
         ArrayList<Order> orders = new ArrayList<>();
