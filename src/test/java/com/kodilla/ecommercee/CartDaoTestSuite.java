@@ -11,6 +11,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.transaction.Transactional;
+
 import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,6 +22,7 @@ import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class CartDaoTestSuite {
 
     @Autowired
@@ -38,15 +42,15 @@ public class CartDaoTestSuite {
         Product product = new Product("product",100);
         Cart cart = new Cart();
 
-        productDao.save(product);
-        userDao.save(user);
-        cartDao.save(cart);
+//        productDao.save(product);
+//        userDao.save(user);
+//        cartDao.save(cart);
 
         cart.setUser(user);
         product.setCart(cart);
-        List<Product> productList = new ArrayList<>();
+      //  List<Product> productList = new ArrayList<>();
         cart.getProductList().add(product);
-        cart.setProductList(productList);
+        //cart.setProductList(productList);
 
         productDao.save(product);
         Long productId = product.getId();
@@ -70,7 +74,7 @@ public class CartDaoTestSuite {
 
         //CleanUp
         cartDao.deleteById(cartId);
-        productDao.deleteById(productId);
+        //productDao.deleteById(productId);
         userDao.deleteById(userId);
     }
 
@@ -111,7 +115,7 @@ public class CartDaoTestSuite {
 
         //CleanUp
          cartDao.deleteById(cartId);
-         productDao.deleteById(productId);
+        // productDao.deleteById(productId);
          userDao.deleteById(userId);
     }
 
