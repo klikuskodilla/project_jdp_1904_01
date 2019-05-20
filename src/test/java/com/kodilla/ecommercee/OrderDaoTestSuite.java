@@ -68,7 +68,6 @@ public class OrderDaoTestSuite {
 
         //CleanUp
         orderDao.deleteById(orderId);
-       //cartDao.deleteById(cartId);
         userDao.deleteById(userId);
     }
 
@@ -121,54 +120,53 @@ public class OrderDaoTestSuite {
         //CleanUp
         orderDao.deleteById(orderId);
         orderDao.deleteById(order2Id);
-       // cartDao.deleteById(cart2Id);
-       // cartDao.deleteById(cartId);
         userDao.deleteById(userId);
         userDao.deleteById(user2Id);
     }
 
-//    @Test
-//    public void testOrderDaoFindAll() {
-//
-//        //Given
-//        Cart cart = new Cart();
-//        Cart cart2 = new Cart();
-//
-//        Order order = new Order("open");
-//        Order order2 = new Order("closed");
-//
-//        User user = new User("Anna", "password_Anna");
-//        User user2 = new User("Mark", "password_Mark");
-//
-//        order.setUser(user);
-//        order.setUser(user2);
-//        order.setCart(cart);
-//        order.setCart(cart2);
-//
-//        userDao.save(user);
-//        Long userId = user.getId();
-//        userDao.save(user2);
-//        Long user2Id = user2.getId();
-//        orderDao.save(order);
-//        Long orderId = order.getId();
-//        orderDao.save(order2);
-//        Long order2Id = order.getId();
-//        cartDao.save(cart);
-//
-//        //When
-//        ArrayList<Order> orders = new ArrayList<>();
-//        Iterator<Order> orderIterator = orderDao.findAll().iterator();
-//        orderIterator.forEachRemaining(orders::add);
-//
-//        //Then
-//        assertEquals(2, orders.size());
-//
-//        //CleanUp
-//        orderDao.deleteById(orderId);
-//        orderDao.deleteById(order2Id);
-//        userDao.deleteById(userId);
-//        userDao.deleteById(user2Id);
-//    }
+    @Test
+    public void testOrderDaoFindAll() {
+
+        //Given
+        Cart cart = new Cart();
+        Cart cart2 = new Cart();
+
+        Order order = new Order("open");
+        Order order2 = new Order("closed");
+
+        User user = new User("Anna", "password_Anna");
+        User user2 = new User("Mark", "password_Mark");
+
+        order.setUser(user);
+        order.setCart(cart);
+        order2.setUser(user2);
+        order2.setCart(cart2);
+
+        userDao.save(user);
+        Long userId = user.getId();
+        userDao.save(user2);
+        Long user2Id = user2.getId();
+        orderDao.save(order);
+        Long orderId = order.getId();
+        orderDao.save(order2);
+        Long order2Id = order2.getId();
+        cartDao.save(cart);
+        cartDao.save(cart2);
+
+        //When
+        ArrayList<Order> orders = new ArrayList<>();
+        Iterator<Order> orderIterator = orderDao.findAll().iterator();
+        orderIterator.forEachRemaining(orders::add);
+
+        //Then
+        assertEquals(2, orders.size());
+
+        //CleanUp
+        orderDao.deleteById(orderId);
+        orderDao.deleteById(order2Id);
+        userDao.deleteById(userId);
+        userDao.deleteById(user2Id);
+    }
 
     @Test
     public void testOrderRelations() {

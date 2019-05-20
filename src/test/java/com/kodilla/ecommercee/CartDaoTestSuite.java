@@ -48,9 +48,7 @@ public class CartDaoTestSuite {
 
         cart.setUser(user);
         product.setCart(cart);
-      //  List<Product> productList = new ArrayList<>();
         cart.getProductList().add(product);
-        //cart.setProductList(productList);
 
         productDao.save(product);
         Long productId = product.getId();
@@ -74,7 +72,6 @@ public class CartDaoTestSuite {
 
         //CleanUp
         cartDao.deleteById(cartId);
-        //productDao.deleteById(productId);
         userDao.deleteById(userId);
     }
 
@@ -115,7 +112,6 @@ public class CartDaoTestSuite {
 
         //CleanUp
          cartDao.deleteById(cartId);
-        // productDao.deleteById(productId);
          userDao.deleteById(userId);
     }
 
