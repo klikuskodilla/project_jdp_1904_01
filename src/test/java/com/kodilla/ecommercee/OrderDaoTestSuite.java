@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Optional;
@@ -21,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class OrderDaoTestSuite {
 
     @Autowired
@@ -174,7 +176,7 @@ public class OrderDaoTestSuite {
         Order order = new Order("open");
         User user = new User("Anna", "password");
         Product product = new Product("product", 10.0);
-
+        productDao.save(product);
         //When
         order.setCart(cart);
         order.setUser(user);
