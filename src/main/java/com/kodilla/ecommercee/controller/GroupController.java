@@ -5,10 +5,7 @@ import com.kodilla.ecommercee.domain.ProductGroup;
 import com.kodilla.ecommercee.mapper.ProductGroupMapper;
 import com.kodilla.ecommercee.service.ProductGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import java.util.ArrayList;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
@@ -27,19 +24,22 @@ public class GroupController {
     }
 
     @RequestMapping(method = RequestMethod.POST,value ="createGroup")
-    public ProductGroup createGroup(GroupDto groupDto){
+    public ProductGroup createGroup(@RequestBody  GroupDto groupDto){
         return productGroupService.saveProductGroup(productGroupMapper.mapToProductGroup(groupDto));
     }
 
     @RequestMapping(method = RequestMethod.GET,value ="getGroup")
-    public GroupDto getGroup(Long id) {
+    public GroupDto getGroup(@RequestParam Long id) {
         return productGroupMapper.mapToGroupDto(productGroupService.getGroup(id).orElse(new ProductGroup()));
     }
 
-    @RequestMapping(method = RequestMethod.POST,value ="updateGroup")
-    public GroupDto updateGroup(GroupDto groupDto) {
+    @RequestMapping(method = RequestMethod.PUT,value ="updateGroup")
+    public GroupDto updateGroup(@RequestBody GroupDto groupDto) {
         return productGroupMapper.mapToGroupDto(productGroupService.saveProductGroup(productGroupMapper.mapToProductGroup(groupDto)));
     }
+
+    @RequestMapping(method = RequestMethod.GET,value ="deleteGroup")
+    public void deleteGroup(@RequestParam Long id) {
+         productGroupService.deleteProductGroup(id);
+    }
 }
-
-

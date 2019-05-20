@@ -23,6 +23,9 @@ public class ProductGroupService {
     public ProductGroup saveProductGroup(final ProductGroup productGroup){
         return productGroupDao.save(productGroup);
     }
+    public void deleteProductGroup(final Long id){
+         productGroupDao.deleteById(id);
+    }
 
     public List<ProductGroup> getAllGroups() {
         ArrayList<ProductGroup> groups = new ArrayList<>();
