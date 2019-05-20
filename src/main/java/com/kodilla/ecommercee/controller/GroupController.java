@@ -38,7 +38,7 @@ public class GroupController {
         return productGroupMapper.mapToGroupDto(productGroupService.saveProductGroup(productGroupMapper.mapToProductGroup(groupDto)));
     }
 
-    @RequestMapping(method = RequestMethod.GET,value ="deleteGroup")
+    @RequestMapping(method = RequestMethod.DELETE,value ="deleteGroup")
     public void deleteGroup(@RequestParam Long id) {
          productGroupService.deleteProductGroup(id);
     }
