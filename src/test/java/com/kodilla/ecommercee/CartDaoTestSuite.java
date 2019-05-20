@@ -42,9 +42,9 @@ public class CartDaoTestSuite {
         Product product = new Product("product",100);
         Cart cart = new Cart();
 
-//        productDao.save(product);
-//        userDao.save(user);
-//        cartDao.save(cart);
+        productDao.save(product);
+        userDao.save(user);
+        cartDao.save(cart);
 
         cart.setUser(user);
         product.setCart(cart);
