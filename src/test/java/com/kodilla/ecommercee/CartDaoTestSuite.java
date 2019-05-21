@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import javax.transaction.Transactional;
 import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class CartDaoTestSuite {
 
     @Autowired
@@ -44,9 +46,7 @@ public class CartDaoTestSuite {
 
         cart.setUser(user);
         product.setCart(cart);
-        List<Product> productList = new ArrayList<>();
         cart.getProductList().add(product);
-        cart.setProductList(productList);
 
         productDao.save(product);
         Long productId = product.getId();
@@ -167,5 +167,51 @@ public class CartDaoTestSuite {
 
         //Then
         assertEquals(0,carts.size());
+    }
+
+    @Test
+    public void contractCartAndProductRelationshipTest(){
+        //Given
+        Cart cart = new Cart();
+        User user = new User("name", "password");
+        Product product = new Product("shoes", 110);
+        Product product1 = new Product("T-shirt", 50);
+
+        //When
+        cart.setUser(user);
+        cart.getProductList().add(product);
+        cart.getProductList().add(product1);
+        user.getCartList().add(cart);
+        product.setCart(cart);
+        product1.setCart(cart);
+
+        cartDao.save(cart);
+        userDao.save(user);
+        productDao.save(product);
+        productDao.save(product1);
+
+        Cart cartTest = cartDao.findById(cart.getId()).get();
+
+        //Then
+        assertEquals("shoes", cartTest.getProductList().get(0).getName());
+        assertEquals(110, cartTest.getProductList().get(0).getPrize(), 0.01);
+        assertEquals("T-shirt", cartTest.getProductList().get(1).getName());
+        assertEquals(50, cartTest.getProductList().get(1).getPrize(), 0.01);
+
+        //Clean Up
+        cartDao.deleteById(cart.getId());
+        userDao.deleteById(user.getId());
+
+        Product productTest1 = productDao.findById(product.getId()).get();
+        Product productTest2 = productDao.findById(product1.getId()).get();
+
+        assertEquals("shoes", productTest1.getName());
+        assertEquals(110, productTest1.getPrize(),0.01);
+
+        assertEquals("T-shirt", productTest2.getName());
+        assertEquals(50, productTest2.getPrize(),0.01);
+
+        productDao.deleteById(product.getId());
+        productDao.deleteById(product1.getId());
     }
 }
