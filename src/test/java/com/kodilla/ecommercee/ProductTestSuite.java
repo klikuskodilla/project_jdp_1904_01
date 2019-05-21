@@ -68,7 +68,11 @@ public class ProductTestSuite {
         cartDao.save(cart);
         orderDao.save(order);
         productGroupDao.save(productGroup);
+
         Product productTest = productDao.findById(product.getId()).get();
+        ProductGroup productGroupTest = productGroupDao.findById(productGroup.getId()).get();
+        Cart cartTest = cartDao.findById(cart.getId()).get();
+        Order orderTest = orderDao.findById(order.getId()).get();
 
         //Then
         assertEquals("Shoes", productTest.getName());
@@ -77,6 +81,14 @@ public class ProductTestSuite {
         assertEquals(cart.getId(), productTest.getCart().getId());
         assertEquals("OPEN", productTest.getOrder().getStatus());
 
+        assertEquals("Shoes", productGroupTest.getProducts().get(0).getName());
+        assertEquals(100, productGroupTest.getProducts().get(0).getPrize(), 0.01);
+
+        assertEquals("Shoes", cartTest.getProductList().get(0).getName());
+        assertEquals(100, cartTest.getProductList().get(0).getPrize(), 0.01);
+
+        assertEquals("Shoes", orderTest.getOrderedProducts().get(0).getName());
+        assertEquals(100, orderTest.getOrderedProducts().get(0).getPrize(), 0.01);
         //Clean Up
         orderDao.deleteById(order.getId());
         cartDao.deleteById(cart.getId());
