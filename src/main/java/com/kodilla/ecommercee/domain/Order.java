@@ -31,15 +31,15 @@ public class Order {
 
     @OneToMany(targetEntity = Product.class,
             mappedBy = "order",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER)
+            cascade = CascadeType.REFRESH,
+            fetch = FetchType.LAZY)
     private List<Product> orderedProducts = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "CART_ID")
     private Cart cart;
 
