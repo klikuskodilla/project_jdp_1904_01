@@ -25,10 +25,13 @@ public class ProductGroup {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @OneToMany(targetEntity =  Product.class,
+    @OneToMany(targetEntity = Product.class,
             mappedBy = "productGroup",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     List<Product> products = new ArrayList<>();
 
+    public ProductGroup(String description) {
+        this.description = description;
+    }
 }

@@ -9,8 +9,13 @@ import java.util.stream.Collectors;
 
 @Component
 public class ProductGroupMapper {
-
     public ProductGroup mapToProductGroup(GroupDto groupDto) {
+        return new ProductGroup(
+                groupDto.getName()
+        );
+    }
+
+    public ProductGroup mapToProductGroupAllArgs(GroupDto groupDto) {
         return new ProductGroup(
                 groupDto.getId(),
                 groupDto.getName(),
@@ -21,13 +26,14 @@ public class ProductGroupMapper {
     public GroupDto mapToGroupDto(ProductGroup productGroup) {
         return new GroupDto(
                 productGroup.getId(),
-                productGroup.getDescription()
+                productGroup.getDescription(),
+                new ArrayList<>()
         );
     }
 
     public List<GroupDto> mapToProductGroupDtoList(List<ProductGroup> productGroupList) {
         return productGroupList.stream()
-                .map(productGroup -> new GroupDto(productGroup.getId(), productGroup.getDescription()))
+                .map(this::mapToGroupDto)
                 .collect(Collectors.toList());
     }
 }

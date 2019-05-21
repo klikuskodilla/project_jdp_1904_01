@@ -11,7 +11,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/group")
 public class GroupController {
-
     @Autowired
     ProductGroupMapper productGroupMapper;
 
@@ -24,7 +23,7 @@ public class GroupController {
     }
 
     @RequestMapping(method = RequestMethod.POST,value ="createGroup")
-    public ProductGroup createGroup(@RequestBody  GroupDto groupDto){
+    public ProductGroup createGroup(@RequestBody GroupDto groupDto){
         return productGroupService.saveProductGroup(productGroupMapper.mapToProductGroup(groupDto));
     }
 
@@ -35,11 +34,11 @@ public class GroupController {
 
     @RequestMapping(method = RequestMethod.PUT,value ="updateGroup")
     public GroupDto updateGroup(@RequestBody GroupDto groupDto) {
-        return productGroupMapper.mapToGroupDto(productGroupService.saveProductGroup(productGroupMapper.mapToProductGroup(groupDto)));
+        return productGroupMapper.mapToGroupDto(productGroupService.saveProductGroup(productGroupMapper.mapToProductGroupAllArgs(groupDto)));
     }
 
     @RequestMapping(method = RequestMethod.DELETE,value ="deleteGroup")
     public void deleteGroup(@RequestParam Long id) {
-         productGroupService.deleteProductGroup(id);
+        productGroupService.deleteProductGroup(id);
     }
 }

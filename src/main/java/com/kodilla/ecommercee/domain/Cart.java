@@ -1,6 +1,9 @@
 package com.kodilla.ecommercee.domain;
 
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,7 @@ public class Cart {
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER
     )
+
     private List<Product> productList = new ArrayList<>();
 
     @ManyToOne
