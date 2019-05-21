@@ -210,4 +210,43 @@ public class OrderDaoTestSuite {
         productDao.deleteById(product.getId());
         userDao.deleteById(user.getId());
     }
+
+    @Test
+    public void contractOrderAndProductRelationshipTest(){
+        //Given
+        Order order = new Order("OPEN");
+        Product product = new Product("shoes", 60);
+        User user = new User("name", "password");
+        Cart cart = new Cart();
+
+        order.getOrderedProducts().add(product);
+        order.setUser(user);
+        order.setCart(cart);
+
+        product.setCart(cart);
+        product.setOrder(order);
+
+        cart.getProductList().add(product);
+        cart.setUser(user);
+
+        //When
+        orderDao.save(order);
+        productDao.save(product);
+        userDao.save(user);
+        cartDao.save(cart);
+
+        Order orderTest = orderDao.findById(order.getId()).get();
+        //Then
+        assertEquals("shoes", orderTest.getOrderedProducts().get(0).getName());
+        assertEquals(60, orderTest.getOrderedProducts().get(0).getPrize(), 0.01);
+
+        //Clean Up
+        orderDao.deleteById(order.getId());
+        cartDao.deleteById(cart.getId());
+        userDao.deleteById(user.getId());
+
+        Product productTest = productDao.findById(product.getId()).get();
+        assertEquals("shoes", productTest.getName());
+        assertEquals(60, productTest.getPrize(), 0.01);
+    }
 }
