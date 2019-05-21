@@ -6,7 +6,6 @@ import com.kodilla.ecommercee.dao.UserDao;
 import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.domain.User;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import javax.transaction.Transactional;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -44,7 +40,7 @@ public class CartDaoTestSuite {
         Product product = new Product("product",100);
         Cart cart = new Cart();
 
-     //   productDao.save(product);
+        productDao.save(product);
         userDao.save(user);
         cartDao.save(cart);
 
@@ -74,7 +70,7 @@ public class CartDaoTestSuite {
 
         //CleanUp
         cartDao.deleteById(cartId);
-       // productDao.deleteById(productId);
+        productDao.deleteById(productId);
         userDao.deleteById(userId);
     }
 
@@ -115,7 +111,7 @@ public class CartDaoTestSuite {
 
         //CleanUp
          cartDao.deleteById(cartId);
-       //  productDao.deleteById(productId);
+         productDao.deleteById(productId);
          userDao.deleteById(userId);
     }
 
