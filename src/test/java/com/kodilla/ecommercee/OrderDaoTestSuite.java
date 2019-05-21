@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Optional;
@@ -20,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class OrderDaoTestSuite {
 
     @Autowired
@@ -65,7 +67,6 @@ public class OrderDaoTestSuite {
 
         //CleanUp
         orderDao.deleteById(orderId);
-        cartDao.deleteById(cartId);
         userDao.deleteById(userId);
     }
 
@@ -118,8 +119,6 @@ public class OrderDaoTestSuite {
         //CleanUp
         orderDao.deleteById(orderId);
         orderDao.deleteById(order2Id);
-        cartDao.deleteById(cart2Id);
-        cartDao.deleteById(cartId);
         userDao.deleteById(userId);
         userDao.deleteById(user2Id);
     }
@@ -138,9 +137,9 @@ public class OrderDaoTestSuite {
         User user2 = new User("Mark", "password_Mark");
 
         order.setUser(user);
-        order.setUser(user2);
         order.setCart(cart);
-        order.setCart(cart2);
+        order2.setUser(user2);
+        order2.setCart(cart2);
 
         userDao.save(user);
         Long userId = user.getId();
@@ -149,8 +148,9 @@ public class OrderDaoTestSuite {
         orderDao.save(order);
         Long orderId = order.getId();
         orderDao.save(order2);
-        Long order2Id = order.getId();
+        Long order2Id = order2.getId();
         cartDao.save(cart);
+        cartDao.save(cart2);
 
         //When
         ArrayList<Order> orders = new ArrayList<>();
@@ -175,7 +175,7 @@ public class OrderDaoTestSuite {
         Order order = new Order("open");
         User user = new User("Anna", "password");
         Product product = new Product("product", 10.0);
-
+        productDao.save(product);
         //When
         order.setCart(cart);
         order.setUser(user);
@@ -208,5 +208,44 @@ public class OrderDaoTestSuite {
         //Clean Up
         productDao.deleteById(product.getId());
         userDao.deleteById(user.getId());
+    }
+
+    @Test
+    public void contractOrderAndProductRelationshipTest(){
+        //Given
+        Order order = new Order("OPEN");
+        Product product = new Product("shoes", 60);
+        User user = new User("name", "password");
+        Cart cart = new Cart();
+
+        order.getOrderedProducts().add(product);
+        order.setUser(user);
+        order.setCart(cart);
+
+        product.setCart(cart);
+        product.setOrder(order);
+
+        cart.getProductList().add(product);
+        cart.setUser(user);
+
+        //When
+        orderDao.save(order);
+        productDao.save(product);
+        userDao.save(user);
+        cartDao.save(cart);
+
+        Order orderTest = orderDao.findById(order.getId()).get();
+        //Then
+        assertEquals("shoes", orderTest.getOrderedProducts().get(0).getName());
+        assertEquals(60, orderTest.getOrderedProducts().get(0).getPrize(), 0.01);
+
+        //Clean Up
+        orderDao.deleteById(order.getId());
+        cartDao.deleteById(cart.getId());
+        userDao.deleteById(user.getId());
+
+        Product productTest = productDao.findById(product.getId()).get();
+        assertEquals("shoes", productTest.getName());
+        assertEquals(60, productTest.getPrize(), 0.01);
     }
 }

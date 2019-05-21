@@ -21,8 +21,8 @@ public class Cart {
     @OneToMany(
             targetEntity = Product.class,
             mappedBy = "cart",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+            cascade = CascadeType.REFRESH,
+            fetch = FetchType.LAZY
     )
 
     private List<Product> productList = new ArrayList<>();
