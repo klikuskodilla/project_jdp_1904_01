@@ -15,7 +15,7 @@ public class CartMapper {
         return null;
     }
 
-    public CartDto mapToCart(Cart cart) {
+    public CartDto mapToCartDto(Cart cart) {
         return null;
     }
 }
