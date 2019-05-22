@@ -18,6 +18,4 @@ public class UserDto {
     private int userKey;
     private String timeGenerateKey;
     private String password;
-    private List<CartDto> cartDtoList;
-    private List<OrderDto> orderDtoList;
 }

@@ -59,12 +59,7 @@ public class User {
         this.userName = userName;
         this.password = password;
         status = true;
-        userKey = keyGenerator();
+        userKey = 0;
         timeGenerateKey = new Date();
-    }
-
-    public int keyGenerator(){
-        Random random = new Random();
-        return random.nextInt(89999)+10001;
     }
 }

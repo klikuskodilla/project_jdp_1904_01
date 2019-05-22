@@ -45,11 +45,8 @@ public class UserMapper {
                 user.getId(),
                 user.getUserName(),
                 user.isStatus(),
-                user.keyGenerator(),
+                user.getUserKey(),
                 dateFormat.format(user.getTimeGenerateKey()),
-                user.getPassword(),
-                new ArrayList<CartDto>(),
-                new ArrayList<OrderDto>()
-        );
+                user.getPassword());
     }
 }

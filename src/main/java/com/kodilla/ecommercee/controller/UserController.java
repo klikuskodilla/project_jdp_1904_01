@@ -53,6 +53,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteUser")
-    public void deleteUser(@RequestBody AccauntDto accauntDto){
+    public String deleteUser(@RequestBody AccauntDto accauntDto){
+        return userService.deleteAccount(accauntDto);
     }
 }
