@@ -23,8 +23,8 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "getUser")
-    public UserDto getUser(@RequestBody AccauntDto accauntDto) {
-        return userService.getUser(accauntDto);
+    public UserDto getUser(@RequestBody UserAccauntDto userAccauntDto) {
+        return userService.getUser(userAccauntDto);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "createUser")
@@ -33,12 +33,12 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "generateNewKey")
-    public String generateNewKey(@RequestBody AccauntDto accauntDto) throws ParseException {
-        return userService.getKey(accauntDto);
+    public String generateNewKey(@RequestBody UserAccauntDto userAccauntDto) throws ParseException {
+        return userService.getKey(userAccauntDto);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "updateUserPassword")
-    public String updateUserPassword(@RequestBody UpDateAccount upDateAccount) throws ParseException {
+    public String updateUserPassword(@RequestBody UpdatedAccount upDateAccount) throws ParseException {
         return userService.updatePassword(upDateAccount);
     }
 
@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteUser")
-    public String deleteUser(@RequestBody AccauntDto accauntDto){
-        return userService.deleteAccount(accauntDto);
+    public String deleteUser(@RequestBody UserAccauntDto userAccauntDto){
+        return userService.deleteAccount(userAccauntDto);
     }
 }

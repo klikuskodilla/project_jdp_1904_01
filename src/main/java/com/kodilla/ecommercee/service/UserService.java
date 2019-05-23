@@ -12,10 +12,10 @@ import java.util.*;
 @Service
 public class UserService {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private boolean activeKey = false;
+    private boolean keyIsActive = false;
     private String info;
-    private boolean checkAccount = false;
-    private boolean changeStatus = false;
+    private boolean accountIsVerified = false;
+    private boolean statusIsChanged = false;
     private boolean deleteUser = false;
 
     @Autowired
@@ -32,16 +32,16 @@ public class UserService {
         return userDao.findAll();
     }
 
-    public UserDto getUser(final AccauntDto accauntDto) {
-       return getUserDto(accauntDto);
+    public UserDto getUser(final UserAccauntDto userAccauntDto) {
+        return getUserDto(userAccauntDto);
     }
 
-    public String getKey(final AccauntDto accauntDto) throws ParseException {
-        return generateNewKey(accauntDto);
+    public String getKey(final UserAccauntDto userAccauntDto) throws ParseException {
+        return generateNewKey(userAccauntDto);
     }
 
-    public String updatePassword(final UpDateAccount upDateAccount) throws ParseException {
-        return newPassword(upDateAccount,validityKey(upDateAccount.getUserId()));
+    public String updatePassword(final UpdatedAccount updatedAccount) throws ParseException {
+        return createNewPassword(updatedAccount,validateKey(updatedAccount.getUserId()));
     }
 
     public String changeUserStatus(final ChangeStatusByAdmin changeStatusByAdmin) throws ParseException {
@@ -53,8 +53,8 @@ public class UserService {
         return info;
     }
 
-    public String deleteAccount(final AccauntDto accauntDto){
-        if (deleteUser(accauntDto)){
+    public String deleteAccount(final UserAccauntDto userAccauntDto){
+        if (deleteUser(userAccauntDto)){
             info = "The user has been removed.";
         }else {
             info = "The user has not been deleted.";
@@ -62,23 +62,27 @@ public class UserService {
         return info;
     }
 
-    private boolean deleteUser(final AccauntDto accauntDto){
-        if (validityKey(accauntDto.getUserId()) && checkAccount(accauntDto.getUserId(), accauntDto.getPassword(), accauntDto.getKey())){
-            userDao.deleteById(accauntDto.getUserId());
+    public int createFirstKey(){
+        return keyGenerator();
+    }
+
+    private boolean deleteUser(final UserAccauntDto userAccauntDto){
+        if (validateKey(userAccauntDto.getUserId()) && verifyUserAccount(userAccauntDto.getUserId(), userAccauntDto.getPassword(), userAccauntDto.getKey())){
+            userDao.deleteById(userAccauntDto.getUserId());
             deleteUser = true;
         }
         return deleteUser;
     }
 
-    private UserDto getUserDto(final AccauntDto accauntDto){
+    private UserDto getUserDto(final UserAccauntDto userAccauntDto){
         UserDto userDto = new UserDto();
-        if(checkAccount(accauntDto.getUserId(), accauntDto.getPassword(), accauntDto.getKey())){
-            userDto.setId(userDao.findById(accauntDto.getUserId()).get().getId());
-            userDto.setUserName(userDao.findById(accauntDto.getUserId()).get().getUserName());
-            userDto.setStatus(userDao.findById(accauntDto.getUserId()).get().isStatus());
-            userDto.setUserKey(userDao.findById(accauntDto.getUserId()).get().getUserKey());
-            userDto.setTimeGenerateKey(dateFormat.format(userDao.findById(accauntDto.getUserId()).get().getTimeGenerateKey()));
-            userDto.setPassword(userDao.findById(accauntDto.getUserId()).get().getPassword());
+        if(verifyUserAccount(userAccauntDto.getUserId(), userAccauntDto.getPassword(), userAccauntDto.getKey())){
+            userDto.setId(userDao.findById(userAccauntDto.getUserId()).get().getId());
+            userDto.setUserName(userDao.findById(userAccauntDto.getUserId()).get().getUserName());
+            userDto.setStatus(userDao.findById(userAccauntDto.getUserId()).get().isStatus());
+            userDto.setUserKey(userDao.findById(userAccauntDto.getUserId()).get().getUserKey());
+            userDto.setTimeGenerateKey(dateFormat.format(userDao.findById(userAccauntDto.getUserId()).get().getTimeGenerateKey()));
+            userDto.setPassword(userDao.findById(userAccauntDto.getUserId()).get().getPassword());
         }
         return userDto;
     }
@@ -91,22 +95,24 @@ public class UserService {
                     changeStatusByAdmin.isNewStatus(),
                     userDao.findById(changeStatusByAdmin.getUserId()).get().getUserKey(),
                     dateFormat.format(userDao.findById(changeStatusByAdmin.getUserId()).get().getTimeGenerateKey()),
-                    userDao.findById(changeStatusByAdmin.getUserId()).get().getPassword());
+                    userDao.findById(changeStatusByAdmin.getUserId()).get().getPassword(),
+                    new ArrayList<CartDto>(),
+                    new ArrayList<OrderDto>());
             userMapper.mapToUserDto(userDao.save(userMapper.mapToUserWithAllParam(userDto)));
-            changeStatus = true;
+            statusIsChanged = true;
         }
-        return changeStatus;
+        return statusIsChanged;
 
     }
-    private String newPassword(final UpDateAccount upDateAccount, boolean activeKey) throws ParseException {
+    private String createNewPassword(final UpdatedAccount updatedAccount, boolean activeKey) throws ParseException {
         UserDto userDto = new UserDto();
-        if (validityKey(upDateAccount.getUserId()) && checkAccount(upDateAccount.getUserId(), upDateAccount.getNewPassword(), upDateAccount.getKey())){
-            userDto.setId(userDao.findById(upDateAccount.getUserId()).get().getId());
-            userDto.setUserName(userDao.findById(upDateAccount.getUserId()).get().getUserName());
-            userDto.setStatus(userDao.findById(upDateAccount.getUserId()).get().isStatus());
-            userDto.setUserKey(userDao.findById(upDateAccount.getUserId()).get().getUserKey());
-            userDto.setTimeGenerateKey(dateFormat.format(userDao.findById(upDateAccount.getUserId()).get().getTimeGenerateKey()));
-            userDto.setPassword(upDateAccount.getNewPassword());
+        if (validateKey(updatedAccount.getUserId()) && verifyUserAccount(updatedAccount.getUserId(), updatedAccount.getNewPassword(), updatedAccount.getKey())){
+            userDto.setId(userDao.findById(updatedAccount.getUserId()).get().getId());
+            userDto.setUserName(userDao.findById(updatedAccount.getUserId()).get().getUserName());
+            userDto.setStatus(userDao.findById(updatedAccount.getUserId()).get().isStatus());
+            userDto.setUserKey(userDao.findById(updatedAccount.getUserId()).get().getUserKey());
+            userDto.setTimeGenerateKey(dateFormat.format(userDao.findById(updatedAccount.getUserId()).get().getTimeGenerateKey()));
+            userDto.setPassword(updatedAccount.getNewPassword());
             userMapper.mapToUserDto(userDao.save(userMapper.mapToUserWithAllParam(userDto)));
             info = "Password update completed successfully.";
         }else {
@@ -115,36 +121,38 @@ public class UserService {
         return info;
     }
 
-    private boolean validityKey(final Long userId){
-        Calendar finshKeyValidity = Calendar.getInstance();
-        finshKeyValidity.setTime(userDao.findById(userId).get().getTimeGenerateKey());
-        finshKeyValidity.add(Calendar.MINUTE, 60);
-        if(Calendar.getInstance().before(finshKeyValidity)){
-                activeKey = true;
+    private boolean validateKey(final Long userId){
+        Calendar keyExpiredTime = Calendar.getInstance();
+        keyExpiredTime.setTime(userDao.findById(userId).get().getTimeGenerateKey());
+        keyExpiredTime.add(Calendar.MINUTE, 60);
+        if(Calendar.getInstance().before(keyExpiredTime)){
+            keyIsActive = true;
         }
-        return activeKey;
+        return keyIsActive;
     }
 
-    private boolean checkAccount(final Long userId, final String password, final  int key){
+    private boolean verifyUserAccount(final Long userId, final String password, final  int key){
         if (userDao.findById(userId).get().getPassword().equals(password) &&
                 userDao.findById(userId).get().getUserKey() == key){
-            checkAccount = true;
+            accountIsVerified = true;
         }
-        return checkAccount;
+        return accountIsVerified;
     }
 
-    private String generateNewKey(final AccauntDto accauntDto) throws ParseException {
-        User user = userDao.findById(accauntDto.getUserId()).get();
-        if(checkAccount(accauntDto.getUserId(), accauntDto.getPassword(), accauntDto.getKey())){
+    private String generateNewKey(final UserAccauntDto userAccauntDto) throws ParseException {
+        User user = userDao.findById(userAccauntDto.getUserId()).get();
+        if(verifyUserAccount(userAccauntDto.getUserId(), userAccauntDto.getPassword(), userAccauntDto.getKey())){
             UserDto userDto = new UserDto(
                     user.getId(),
                     user.getUserName(),
                     user.isStatus(),
                     keyGenerator(),
                     dateFormat.format(new Date()),
-                    user.getPassword());
+                    user.getPassword(),
+                    new ArrayList<CartDto>(),
+                    new ArrayList<OrderDto>());
             userMapper.mapToUserDto(userDao.save(userMapper.mapToUserWithAllParam(userDto)));
-            info = "Your new key is: " + userDao.findById(accauntDto.getUserId()).get().getUserKey();
+            info = "Your new key is: " + userDao.findById(userAccauntDto.getUserId()).get().getUserKey();
         }else {
             info = "Bad data has been entered.";
         }

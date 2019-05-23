@@ -12,4 +12,6 @@ import lombok.Setter;
 public class UsersDto {
     private Long userId;
     private String userName;
+    private boolean status;
+    private  int userKey;
 }

@@ -1,6 +1,8 @@
 package com.kodilla.ecommercee.mapper;
 
 import com.kodilla.ecommercee.domain.*;
+import com.kodilla.ecommercee.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
@@ -11,13 +13,17 @@ import java.util.stream.Collectors;
 
 @Component
 public class UserMapper {
+    @Autowired
+    private UserService userService;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public User mapToUser(final CreateUserDto createUserDto){
-        return new User(
+        User user = new User(
                 createUserDto.getUserName(),
                 createUserDto.getPassword()
         );
+        user.setUserKey(userService.createFirstKey());
+        return user;
     }
 
     public User mapToUserWithAllParam(final UserDto userDto) throws ParseException {
@@ -36,7 +42,9 @@ public class UserMapper {
         return userList.stream()
                 .map(u -> new UsersDto(
                         u.getId(),
-                        u.getUserName()))
+                        u.getUserName(),
+                        u.isStatus(),
+                        u.getUserKey()))
                 .collect(Collectors.toList());
     }
 
@@ -47,6 +55,8 @@ public class UserMapper {
                 user.isStatus(),
                 user.getUserKey(),
                 dateFormat.format(user.getTimeGenerateKey()),
-                user.getPassword());
+                user.getPassword(),
+                new ArrayList<CartDto>(),
+                new ArrayList<OrderDto>());
     }
 }
