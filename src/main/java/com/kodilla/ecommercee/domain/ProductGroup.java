@@ -24,7 +24,7 @@ public class ProductGroup {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @OneToMany(targetEntity =  Product.class,
+    @OneToMany(targetEntity = Product.class,
             mappedBy = "productGroup",
             cascade = CascadeType.REFRESH,
             fetch = FetchType.LAZY)
