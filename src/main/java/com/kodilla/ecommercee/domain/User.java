@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -57,12 +59,7 @@ public class User {
         this.userName = userName;
         this.password = password;
         status = true;
-        userKey = keyGenerator();
+        userKey = 0;
         timeGenerateKey = new Date();
-    }
-
-    public int keyGenerator(){
-        Random random = new Random();
-        return random.nextInt(89999)+10001;
     }
 }
