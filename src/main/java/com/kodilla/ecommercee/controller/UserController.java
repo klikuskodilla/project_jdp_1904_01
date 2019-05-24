@@ -1,27 +1,50 @@
 package com.kodilla.ecommercee.controller;
 
-import com.kodilla.ecommercee.domain.UserDto;
+import com.kodilla.ecommercee.domain.*;
+import com.kodilla.ecommercee.mapper.UserMapper;
+import com.kodilla.ecommercee.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET, value = "getUsers")
-    public List<UserDto> getUsers(){
-        return new ArrayList<>();
+    public List<UsersDto> getUsersDto() {
+        return userMapper.getUsersDtoList(userService.getUsers());
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "getUser")
-    public UserDto getUser(Long userId){
-        return new UserDto(1L, "name", true, 11111);
+    public UserDto getUser(@RequestBody UserAccauntDto userAccauntDto) {
+        return userService.getUser(userAccauntDto);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "createUser")
-    public void createUser(UserDto userDto){
-        System.out.println("New User Created");
+    public void createUser(@RequestBody CreateUserDto createUserDto){
+        userService.saveUser(userMapper.mapToUser(createUserDto));
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "generateNewKey")
+    public String generateNewKey(@RequestBody UserAccauntDto userAccauntDto) throws ParseException {
+        return userService.getKey(userAccauntDto);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "updateUserPassword")
+    public String updateUserPassword(@RequestBody UpdatedAccount upDateAccount) throws ParseException {
+        return userService.updatePassword(upDateAccount);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "changeUserStatus")
+    public String changeUserStatus(@RequestBody ChangeStatusByAdmin changeStatusByAdmin) throws ParseException {
+        return userService.changeUserStatus(changeStatusByAdmin);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "updateUser")
@@ -30,7 +53,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteUser")
-    public void deleteUser(Long userId){
-        System.out.println("Delete user with number Id: " + userId);
+    public String deleteUser(@RequestBody UserAccauntDto userAccauntDto){
+        return userService.deleteAccount(userAccauntDto);
     }
 }
