@@ -1,34 +1,47 @@
 package com.kodilla.ecommercee.controller;
 
-import com.kodilla.ecommercee.domain.CartDto;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.kodilla.ecommercee.domain.*;
+import com.kodilla.ecommercee.exception.CartNotFoundException;
+import com.kodilla.ecommercee.mapper.CartMapper;
+import com.kodilla.ecommercee.service.CartService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/cart")
 public class CartController {
+    @Autowired
+    private CartService cartService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "getProductsFromCart")
-    public List<CartDto> getAllProductsFromCart(){
-        return new ArrayList<>();
+    @Autowired
+    private CartMapper cartMapper;
+
+    @RequestMapping(method = RequestMethod.GET, value = "getCart")
+    public CartDto getCart(@RequestParam Long cartId) throws CartNotFoundException {
+        return cartService.getCart(cartId);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "getProductFromCart")
+    public List<Product> getProductFromCart(@RequestParam Long cartId) throws CartNotFoundException {
+        return cartService.getProducts(cartId);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "createCart")
-    public void createCart(CartDto cartDto){
-        System.out.println("New Cart Created");
+    public void createCart(@RequestBody UserAccauntDto userAccauntDto) throws ParseException {
+    cartService.saveCart(cartMapper.mapToCart(userAccauntDto));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "addProductToCart")
-    public void addProductToCart(Long productId){
-        System.out.println("Add product to cart");
+    public String addProductToCart(@RequestParam Long productId, @RequestBody UserAccauntDto userAccauntDto){
+        return "Add product to cart";
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteProductFromCart")
-    public void deleteProductFromCart(Long productId){
+    public void deleteProductFromCart(@RequestBody DeleteProductFromCartDto deleteProductFromCartDto){
         System.out.println("Product with ID number removed");
     }
 

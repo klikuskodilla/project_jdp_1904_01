@@ -1,14 +1,14 @@
 package com.kodilla.ecommercee.domain;
 
-import lombok.Data;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
+import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "CART_T")
 public class Cart {
@@ -22,12 +22,15 @@ public class Cart {
             targetEntity = Product.class,
             mappedBy = "cart",
             cascade = CascadeType.REFRESH,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
-
     private List<Product> productList = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
+
+    public Cart(final User user){
+        this.user = user;
+    }
 }
