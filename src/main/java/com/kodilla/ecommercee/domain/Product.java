@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "PRODUCT_T")
 public class Product {
     @Id
@@ -40,5 +42,18 @@ public class Product {
     public Product(String name, double prize) {
         this.name = name;
         this.prize = prize;
+    }
+
+    public Product(String name, double prize, ProductGroup productGroup) {
+        this.name = name;
+        this.prize = prize;
+        this.productGroup = productGroup;
+    }
+
+    public Product(Long id, String name, double prize, ProductGroup productGroup) {
+        this.id = id;
+        this.name = name;
+        this.prize = prize;
+        this.productGroup = productGroup;
     }
 }
