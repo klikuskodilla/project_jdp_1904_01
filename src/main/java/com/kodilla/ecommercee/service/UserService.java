@@ -2,6 +2,7 @@ package com.kodilla.ecommercee.service;
 
 import com.kodilla.ecommercee.dao.UserDao;
 import com.kodilla.ecommercee.domain.*;
+import com.kodilla.ecommercee.exception.UserNotFoundException;
 import com.kodilla.ecommercee.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,6 @@ import java.util.*;
 @Service
 public class UserService {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private boolean keyIsActive = false;
-    private String info;
-    private boolean accountIsVerified = false;
-    private boolean statusIsChanged = false;
-    private boolean deleteUser = false;
 
     @Autowired
     private UserDao userDao;
@@ -24,101 +20,82 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public User saveUser(final User user){
+    public User saveUser(final CreateUserDto createUserDto){
+        User user = new User(createUserDto.getUserName(), createUserDto.getPassword());
+        user.setUserKey(keyGenerator());
         return userDao.save(user);
     }
 
-    public List<User> getUsers(){
-        return userDao.findAll();
+    public List<UserAccountDto> getUsers(){
+        return userMapper.getUsersDtoList(userDao.findAll());
     }
 
-    public UserDto getUser(final UserAccauntDto userAccauntDto) {
-        return getUserDto(userAccauntDto);
+    public GetUserDto getUser(final UserAccountDto userAccountDto) throws UserNotFoundException {
+        return getUserDto(userAccountDto);
     }
 
-    public String getKey(final UserAccauntDto userAccauntDto) throws ParseException {
-        return generateNewKey(userAccauntDto);
+    public String getKey(final UserAccountDto userAccountDto) throws ParseException, UserNotFoundException {
+        return setNewKeyForUser(userAccountDto);
     }
 
-    public String updatePassword(final UpdatedAccount updatedAccount) throws ParseException {
-        return createNewPassword(updatedAccount,validateKey(updatedAccount.getUserId()));
+    public String updatePassword(final UpdatedAccount updatedAccount) throws ParseException, UserNotFoundException {
+        return createNewPassword(updatedAccount);
     }
 
-    public String changeUserStatus(final ChangeStatusByAdmin changeStatusByAdmin) throws ParseException {
+    public String changeUserStatus(final ChangeStatusByAdmin changeStatusByAdmin) throws ParseException, UserNotFoundException {
         if (newStatus(changeStatusByAdmin)){
-            info = "The status has been changed.";
-        }else {
-            info = "The status has not been changed.";
+            return  "The status has been changed.";
         }
-        return info;
+        return "The status has not been changed.";
     }
 
-    public String deleteAccount(final UserAccauntDto userAccauntDto){
-        if (deleteUser(userAccauntDto)){
-            info = "The user has been removed.";
-        }else {
-            info = "The user has not been deleted.";
+    public String deleteAccount(final UserAccountDto userAccountDto){
+        if (deleteUser(userAccountDto)){
+            return "The user has been removed.";
         }
-        return info;
+        return "The user has not been deleted.";
     }
 
     public int createFirstKey(){
         return keyGenerator();
     }
 
-    private boolean deleteUser(final UserAccauntDto userAccauntDto){
-        if (validateKey(userAccauntDto.getUserId()) && verifyUserAccount(userAccauntDto.getUserId(), userAccauntDto.getPassword(), userAccauntDto.getKey())){
-            userDao.deleteById(userAccauntDto.getUserId());
-            deleteUser = true;
+    private boolean deleteUser(final UserAccountDto userAccountDto){
+        if (validateKey(userAccountDto.getUserId()) && verifyUserAccount(userAccountDto.getUserId(), userAccountDto.getPassword(), userAccountDto.getKey())){
+            userDao.deleteById(userAccountDto.getUserId());
+            return true;
         }
-        return deleteUser;
+        return false;
     }
 
-    private UserDto getUserDto(final UserAccauntDto userAccauntDto){
-        UserDto userDto = new UserDto();
-        if(verifyUserAccount(userAccauntDto.getUserId(), userAccauntDto.getPassword(), userAccauntDto.getKey())){
-            userDto.setId(userDao.findById(userAccauntDto.getUserId()).get().getId());
-            userDto.setUserName(userDao.findById(userAccauntDto.getUserId()).get().getUserName());
-            userDto.setStatus(userDao.findById(userAccauntDto.getUserId()).get().isStatus());
-            userDto.setUserKey(userDao.findById(userAccauntDto.getUserId()).get().getUserKey());
-            userDto.setTimeGenerateKey(dateFormat.format(userDao.findById(userAccauntDto.getUserId()).get().getTimeGenerateKey()));
-            userDto.setPassword(userDao.findById(userAccauntDto.getUserId()).get().getPassword());
+    private GetUserDto getUserDto(final UserAccountDto userAccountDto) throws UserNotFoundException {
+        if(verifyUserAccount(userAccountDto.getUserId(), userAccountDto.getPassword(), userAccountDto.getKey())){
+            return userMapper.mapToUserDto(userDao.findById(userAccountDto.getUserId()).orElseThrow(UserNotFoundException::new));
+
         }
-        return userDto;
+        return new GetUserDto();
     }
 
-    private boolean newStatus(final ChangeStatusByAdmin changeStatusByAdmin) throws ParseException {
+    private boolean newStatus(final ChangeStatusByAdmin changeStatusByAdmin) throws ParseException, UserNotFoundException {
         if(changeStatusByAdmin.getAdminLogin().equals("admin") && changeStatusByAdmin.getAdminPassword().equals("admin")){
-            UserDto userDto = new UserDto(
-                    userDao.findById(changeStatusByAdmin.getUserId()).get().getId(),
-                    userDao.findById(changeStatusByAdmin.getUserId()).get().getUserName(),
-                    changeStatusByAdmin.isNewStatus(),
-                    userDao.findById(changeStatusByAdmin.getUserId()).get().getUserKey(),
-                    dateFormat.format(userDao.findById(changeStatusByAdmin.getUserId()).get().getTimeGenerateKey()),
-                    userDao.findById(changeStatusByAdmin.getUserId()).get().getPassword(),
-                    new ArrayList<CartDto>(),
-                    new ArrayList<OrderDto>());
-            userMapper.mapToUserDto(userDao.save(userMapper.mapToUserWithAllParam(userDto)));
-            statusIsChanged = true;
+            GetUserDto getUserDto =
+                    userMapper.mapToUserDto(userDao.findById(changeStatusByAdmin.getUserId()).orElseThrow(UserNotFoundException::new));
+            getUserDto.setStatus(changeStatusByAdmin.isNewStatus());
+            userDao.save(userMapper.mapToUserWithAllParam(getUserDto));
+            return true;
         }
-        return statusIsChanged;
-
+        return false;
     }
-    private String createNewPassword(final UpdatedAccount updatedAccount, boolean activeKey) throws ParseException {
-        UserDto userDto = new UserDto();
-        if (validateKey(updatedAccount.getUserId()) && verifyUserAccount(updatedAccount.getUserId(), updatedAccount.getNewPassword(), updatedAccount.getKey())){
-            userDto.setId(userDao.findById(updatedAccount.getUserId()).get().getId());
-            userDto.setUserName(userDao.findById(updatedAccount.getUserId()).get().getUserName());
-            userDto.setStatus(userDao.findById(updatedAccount.getUserId()).get().isStatus());
-            userDto.setUserKey(userDao.findById(updatedAccount.getUserId()).get().getUserKey());
-            userDto.setTimeGenerateKey(dateFormat.format(userDao.findById(updatedAccount.getUserId()).get().getTimeGenerateKey()));
-            userDto.setPassword(updatedAccount.getNewPassword());
-            userMapper.mapToUserDto(userDao.save(userMapper.mapToUserWithAllParam(userDto)));
-            info = "Password update completed successfully.";
-        }else {
-            info = "Password update failed";
+
+    private String createNewPassword(final UpdatedAccount updatedAccount) throws ParseException, UserNotFoundException {
+        if (validateKey(updatedAccount.getUserId()) && verifyUserAccount(updatedAccount.getUserId(), updatedAccount.getPassword(), updatedAccount.getKey())){
+            GetUserDto getUserDtoWithNewPassword =
+                    userMapper.mapToUserDto(userDao.findById(updatedAccount.getUserId()).orElseThrow(UserNotFoundException::new));
+            getUserDtoWithNewPassword.setPassword(updatedAccount.getNewPassword());
+            userDao.save(userMapper.mapToUserWithAllParam(getUserDtoWithNewPassword));
+            return "Password update completed successfully.";
         }
-        return info;
+        return "Password update failed";
     }
 
     private boolean validateKey(final Long userId){
@@ -126,37 +103,28 @@ public class UserService {
         keyExpiredTime.setTime(userDao.findById(userId).get().getTimeGenerateKey());
         keyExpiredTime.add(Calendar.MINUTE, 60);
         if(Calendar.getInstance().before(keyExpiredTime)){
-            keyIsActive = true;
+            return true;
         }
-        return keyIsActive;
+        return false;
     }
 
     private boolean verifyUserAccount(final Long userId, final String password, final  int key){
         if (userDao.findById(userId).get().getPassword().equals(password) &&
                 userDao.findById(userId).get().getUserKey() == key){
-            accountIsVerified = true;
+            return true;
         }
-        return accountIsVerified;
+        return false;
     }
 
-    private String generateNewKey(final UserAccauntDto userAccauntDto) throws ParseException {
-        User user = userDao.findById(userAccauntDto.getUserId()).get();
-        if(verifyUserAccount(userAccauntDto.getUserId(), userAccauntDto.getPassword(), userAccauntDto.getKey())){
-            UserDto userDto = new UserDto(
-                    user.getId(),
-                    user.getUserName(),
-                    user.isStatus(),
-                    keyGenerator(),
-                    dateFormat.format(new Date()),
-                    user.getPassword(),
-                    new ArrayList<CartDto>(),
-                    new ArrayList<OrderDto>());
-            userMapper.mapToUserDto(userDao.save(userMapper.mapToUserWithAllParam(userDto)));
-            info = "Your new key is: " + userDao.findById(userAccauntDto.getUserId()).get().getUserKey();
-        }else {
-            info = "Bad data has been entered.";
+    private String setNewKeyForUser(final UserAccountDto userAccountDto) throws ParseException, UserNotFoundException {
+        if(verifyUserAccount(userAccountDto.getUserId(), userAccountDto.getPassword(), userAccountDto.getKey())){
+            GetUserDto getUserDto =
+                    userMapper.mapToUserDto(userDao.findById(userAccountDto.getUserId()).orElseThrow(UserNotFoundException::new));
+            getUserDto.setUserKey(keyGenerator());
+            userDao.save(userMapper.mapToUserWithAllParam(getUserDto));
+            return  "Your new key is: " + userDao.findById(userAccountDto.getUserId()).get().getUserKey();
         }
-        return info;
+        return "Bad data has been entered.";
     }
 
     private int keyGenerator(){
