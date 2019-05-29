@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserDto {
+public class GetUserDto {
     private long id;
     private String userName;
     private boolean status;
